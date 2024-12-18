@@ -4,6 +4,10 @@ from mathiol_engine.maths import Maths
 
 
 class Player(PyxelKinematicBody):
+    """
+    Player object
+    """
+
     def __init__(self) -> None:
         super().__init__()
 

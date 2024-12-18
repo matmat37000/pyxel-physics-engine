@@ -2,9 +2,13 @@ from typing import Any
 
 
 class Child:
+    """
+    Child object for the ObjectTree
+    """
+
     def __init__(self, parent_id: str, child_name: str, base_object: Any) -> None:
         self.parent_id: str = parent_id
-        self.name: str = parent_id
+        self.name: str = child_name
         self.base_object: Any = base_object
         self.id = id(base_object)
 
@@ -16,6 +20,10 @@ class Child:
 
 
 class Parent:
+    """
+    Parent object for the ObjectTree
+    """
+
     def __init__(self, name: str, base_object: Any) -> None:
         self.child: dict[str, Child] = {}
         self.name: str
@@ -41,29 +49,37 @@ class Parent:
 
 
 class ObjectTree(dict[str, Parent]):
-    def __init__(self) -> None:
-        super().__init__()
+    """
+    Tree system for object in the scene
+    """
 
     def add_object_to_scene(
         self,
         object_name: str,
-        new_object: type,
+        new_object: object,
         parent_id: str | None = None,
-        *args: Any,
-        **kwargs: Any,
     ) -> None:
-        if self.__contains__(object_name):
+        """
+        Add an object to the scene tree
+
+        Args:
+            object_name (str): Name of the object, must be an unique identifier
+            new_object (type): The new object
+            parent_id (str | None, optional): Parent id (object_name). Defaults to None.
+
+        Raises:
+            KeyError: An object with the same id (name) already exist
+            KeyError: Parent doesn't exist
+        """
+        if object_name in self:
             raise KeyError("Object with this name already exist")
         if parent_id is None:
-            new_instance = new_object(*args, **kwargs)
-            new_parent: Parent = Parent(object_name, new_instance)
+            new_parent: Parent = Parent(object_name, new_object)
             self.update({object_name: new_parent})
         else:
             parent: Parent | None = self.get(parent_id)
             if parent is not None:
-                parent.child[object_name] = Child(
-                    parent_id, object_name, new_object(*args, **kwargs)
-                )
+                parent.child[object_name] = Child(parent_id, object_name, new_object)
             else:
                 raise KeyError("Parent does not exist")
 
@@ -76,8 +92,8 @@ class ObjectTree(dict[str, Parent]):
 
 if __name__ == "__main__":
     tree = ObjectTree()
-    tree.add_object_to_scene("test", int, None, 5)
-    tree.add_object_to_scene("test2", str, None, "By !")
-    tree.add_object_to_scene("child1", str, "test", "I'm a child")
+    tree.add_object_to_scene("test", 5, None)
+    tree.add_object_to_scene("test2", "By !", None)
+    tree.add_object_to_scene("child1", "I'm a child", "test")
     print(tree)
     print(tree["test"])
