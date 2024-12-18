@@ -59,11 +59,11 @@ player_type = Player        # Type
 player_object = Player()    # Instance
 ```
 
-`parent_id` (`str`) by default is none, this is field is for (not implemented) parent/child system in the tree
+`parent_id` (`str`) by default is none, this is field is for (WIP) parent/child system in the tree.
 
-`*args`, `**kwargs` are for the `object_type` constructor is there any.
+`*args`, `**kwargs` are for the `object_type` constructor if there any.
 
-##### Exception
+##### Exceptions
 
 `KeyError`: Object with this name already exist
 
