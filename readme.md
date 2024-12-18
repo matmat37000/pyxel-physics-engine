@@ -55,8 +55,8 @@ ObjectTree().add_object_to_scene("object_name", object_type, "parent_name", *arg
 ```python
 class Player: ...
 
-player_type = Player
-player_object = Player()
+player_type = Player        # Type
+player_object = Player()    # Instance
 ```
 
 `parent_id` (`str`) by default is none, this is field is for (not implemented) parent/child system in the tree
