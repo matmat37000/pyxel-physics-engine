@@ -8,7 +8,10 @@ class PyxelObject:
     Basic Pyxel Object
     """
 
-    def __init__(self) -> None: ...
+    def __init__(self) -> None:
+        # In format (offset, frame_count)
+        self.sprites_sheet: dict[str, tuple[int, int]]
+        self.current_anim: str
 
     def update(self) -> None:
         """
