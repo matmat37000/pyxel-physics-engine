@@ -52,6 +52,8 @@ class ObjectTree(dict[str, Parent]):
         *args: Any,
         **kwargs: Any,
     ) -> None:
+        if self.__contains__(object_name):
+            raise KeyError("Object with this name already exist")
         if parent_id is None:
             new_instance = new_object(*args, **kwargs)
             new_parent: Parent = Parent(object_name, new_instance)
@@ -63,7 +65,7 @@ class ObjectTree(dict[str, Parent]):
                     parent_id, object_name, new_object(*args, **kwargs)
                 )
             else:
-                raise ValueError("Parent does not exist")
+                raise KeyError("Parent does not exist")
 
     def __getitem__(self, key: str) -> Any:
         return super().__getitem__(key).base_object
