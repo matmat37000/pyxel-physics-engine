@@ -50,7 +50,7 @@ ObjectTree().add_object_to_scene("object_name", object_type, "parent_name", *arg
 
 `object_name` (`str`) is for retrieving the object, this must be a unique identifier.
 
-`new_object` (`type`) is the type of the object, not the instance, for example:
+`new_object` (`object`) is the instance of the object, not the type, for example:
 
 ```python
 class Player: ...
