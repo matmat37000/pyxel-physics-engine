@@ -27,13 +27,10 @@ class Game:
     def __init__(self):
         pyxel.init(240, 160)
 
-        self.object_tree = ObjectTree()
-        self.player: Player = Player()
-        self.player2: Player = Player()
-        self.object_tree.add_object_to_scene(self.player)
-        self.object_tree.add_object_to_scene(self.player)
+        self.object_tree: ObjectTree = ObjectTree()
+        self.object_tree.add_object_to_scene("player1", Player)
+        self.player: Player = self.object_tree["player1"]
         self.player.position.x = 15
-        self.player2.position.x = 45
 
         # Flags
         self.debug_flags: bool = False
