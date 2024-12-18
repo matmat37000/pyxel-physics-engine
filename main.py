@@ -39,10 +39,10 @@ class Game:
         self.debug_flags: bool = False
 
         # Load assets
+        pyxel.load("assets/assets.pyxres")
         pyxel.images[0] = pyxel.Image.from_image(
             filename="assets/tileset_24x32.png", incl_colors=False
         )
-        pyxel.load("assets/assets.pyxres")
 
         # Load the maps
         for i in range(3):
@@ -57,7 +57,7 @@ class Game:
 
     def draw(self):
         # Clear the screen
-        pyxel.cls(COLOR.DARK_BLUE)
+        pyxel.cls(COLOR.BLUE)
         # Load the tilemap
         pyxel.bltm(0, 0, 0, 0, 0, pyxel.width, pyxel.height, COLOR.PURPLE)
         pyxel.bltm(0, 0, 1, 0, 0, pyxel.width, pyxel.height, COLOR.PURPLE)

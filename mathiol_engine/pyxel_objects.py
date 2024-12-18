@@ -34,9 +34,14 @@ class PyxelKinematicBody(PyxelObject):
     def __init__(self) -> None:
         super().__init__()
 
-        # Transform
+        # Physics
         self.position: Maths.Vector2 = Maths.Vector2()
         self.velocity: Maths.Vector2 = Maths.Vector2()
+        self.object_height: int = 0
+        self.object_width: int = 0
+        self.sprite_offset_x: int = 0
+        self.sprite_offset_y: int = 0
+        self.object_weight: int = 1
 
         # Flags
         self.is_in_air_flags: bool = False
@@ -61,11 +66,11 @@ class PyxelKinematicBody(PyxelObject):
         """
 
         # Snap or x, y position to the grid of tilemap
-        x1: int = pyxel.floor(x) // 8
-        y1: int = pyxel.floor(y) // 8
+        x1: int = pyxel.floor(x + self.sprite_offset_x) // 8
+        y1: int = pyxel.floor(y + self.sprite_offset_y) // 8
         # Add +7 for our player hight
-        x2: int = (pyxel.ceil(x) + 7) // 8
-        y2: int = (pyxel.ceil(y) + 7) // 8
+        x2: int = (pyxel.ceil(x + self.sprite_offset_x) + self.object_width - 1) // 8
+        y2: int = (pyxel.ceil(y + self.sprite_offset_y) + self.object_height - 1) // 8
 
         for yi in range(y1, y2 + 1):
             for xi in range(x1, x2 + 1):
@@ -94,7 +99,9 @@ class PyxelKinematicBody(PyxelObject):
         Returns:
             bool: BONKED ?
         """
-        if self.is_colliding(self.position.x, self.position.y - 0.8):
+        if self.is_colliding(
+            self.position.x, self.position.y - self.object_height * 0.1
+        ):
             self.is_bonked_flags = True
             return True
         else:
@@ -120,14 +127,13 @@ class PyxelKinematicBody(PyxelObject):
             self.is_in_air_flags = True
             self.position.y = ((self.position.y + 1) // 8) * 8
             self.is_in_air_flags = False
-        elif self.is_bonked():
-            self.velocity.y *= -1
-            # Snap the body to avoid clipping
-            self.position.y = ((self.position.y) // 8) * 8
+        elif self.is_bonked() and not self.is_on_floor() and self.is_in_air_flags:
+            self.velocity.y -= self.object_weight / 2 * 4 * Maths.GRAVITY * Maths.DELTA
             self.is_in_air_flags = True
         elif not self.is_on_floor():
             # Build the velocity
-            self.velocity.y -= Maths.GRAVITY * Maths.DELTA
+            self.velocity.y -= self.object_weight / 2 * Maths.GRAVITY * Maths.DELTA
+            self.is_in_air_flags = True
 
         # Check for Y collision (if hit a tile)
         for _ in range(pyxel.ceil(abs(dy))):
