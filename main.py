@@ -28,7 +28,7 @@ class Game:
         pyxel.init(240, 160)
 
         self.object_tree: ObjectTree = ObjectTree()
-        self.object_tree.add_object_to_scene("player1", Player)
+        self.object_tree.add_object_to_scene("player1", Player())
         self.player: Player = self.object_tree["player1"]
         self.player.position.x = 15
 
@@ -50,7 +50,8 @@ class Game:
         pyxel.run(self.update, self.draw)
 
     def update(self):
-        self.player.update()
+        self.object_tree.update_tree_objects()
+        pass
 
     def draw(self):
         # Clear the screen
@@ -62,7 +63,8 @@ class Game:
             pyxel.bltm(0, 0, 2, 0, 0, pyxel.width, pyxel.height, COLOR.PURPLE)
 
         # Call the player draw
-        self.player.draw()
+        self.object_tree.draw_tree_objects()
+        pass
 
 
 if __name__ == "__main__":

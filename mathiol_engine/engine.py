@@ -53,6 +53,19 @@ class ObjectTree(dict[str, Parent]):
     Tree system for object in the scene
     """
 
+    def update_tree_objects(self) -> None:
+        for pyxel_object in self.values():
+            update_f = getattr(pyxel_object.base_object, "update", None)
+            if callable(update_f):
+                update_f()
+                # pyxel_object.base_object.update()
+
+    def draw_tree_objects(self) -> None:
+        for pyxel_object in self.values():
+            update_f = getattr(pyxel_object.base_object, "draw", None)
+            if callable(update_f):
+                update_f()
+
     def add_object_to_scene(
         self,
         object_name: str,
